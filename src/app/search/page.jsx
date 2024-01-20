@@ -57,7 +57,7 @@ export default function Search() {
       setShowMore(false);
       const searchQuery = urlParams.toString();
       console.log(searchQuery)
-      const res = await fetch(`/api/search?query=${searchQuery}`);
+      const res = await fetch(`/api/search?${searchQuery}`);
       const data = await res.json();
       if (data.length > 8) {
         setShowMore(true);
@@ -119,7 +119,11 @@ export default function Search() {
     router.push(`/search?${searchQuery}`);
     const res = await fetch(`/api/search?${searchQuery}`);
       const data = await res.json();
-      setListings([...listings, ...data]);
+
+
+    console.log(data)
+
+      setListings(data);
   };
 
   const onShowMoreClick = async () => {

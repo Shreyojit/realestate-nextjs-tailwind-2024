@@ -58,6 +58,8 @@ export async function GET(req) {
       .limit(limit)
       .skip(startIndex);
 
+      console.log(listings)
+
     return new Response(JSON.stringify(listings), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
