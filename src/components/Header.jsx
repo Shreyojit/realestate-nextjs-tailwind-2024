@@ -11,6 +11,9 @@ import { Menu } from '@headlessui/react';
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
+
+  console.log(currentUser)
+
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter(); // Use useRouter hook
 
@@ -183,7 +186,7 @@ export default function Header() {
             className={`py-2 px-8 cursor-pointer ${
               active ? 'bg-gray-100' : 'hover:bg-gray-100'
             }`}
-            onClick={() => router.push('/profile')}
+            onClick={() => router.push(`/profile/${currentUser?._id}`)}
           >
             My Profile
           </li>

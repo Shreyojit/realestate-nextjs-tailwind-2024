@@ -19,3 +19,20 @@ export function verifyJwtToken(token) {
         return null;
     }
 }
+
+export function authorize(req) {
+    const accessToken = req.headers.get('authorization')
+
+    const token = accessToken.split(" ")[1]
+
+    const decodedToken = verifyJwtToken(token)
+
+    if (!accessToken || !decodedToken) {
+        return new Response(
+            JSON.stringify({ message: "unauthorized (wrong or expired token)" }),
+            { status: 403 }
+        )
+    }
+
+    return decodedToken
+}
