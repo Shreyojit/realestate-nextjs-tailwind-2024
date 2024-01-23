@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/Header';
 
 export default function CreateListing() {
   const { data: session, status } = useSession()
@@ -201,7 +202,10 @@ console.log(rooms);
     }
   };
   return (
+    <>
+  
     <main className='p-3 max-w-4xl mx-auto'>
+
       <h1 className='text-3xl font-semibold text-center my-7'>
         Create a Listing
       </h1>
@@ -452,5 +456,6 @@ console.log(rooms);
         </div>
       </form>
     </main>
+    </>
   );
 }

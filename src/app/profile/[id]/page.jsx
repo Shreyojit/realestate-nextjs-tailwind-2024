@@ -23,6 +23,8 @@ import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { app } from '@/firebase';
+import { Router } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 
 export default function Profile(ctx) {
@@ -35,6 +37,8 @@ export default function Profile(ctx) {
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
   console.log(currentUser)
+
+  const router = useRouter()
 
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
@@ -102,9 +106,10 @@ export default function Profile(ctx) {
         dispatch(updateUserFailure(data.message));
         return;
       }
-
+      console.log(data,res)
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
+      router.push("/")
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 import { Menu } from '@headlessui/react';
 
@@ -13,6 +13,9 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
 
   console.log(currentUser)
+
+  const { data: session, status } = useSession()
+
 
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter(); // Use useRouter hook
@@ -44,7 +47,7 @@ export default function Header() {
    
 
     <header className='bg-slate-200 items-center shadow-md'>
-      <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
+      <div className='relative flex justify-between items-center max-w-6xl mx-auto p-3'>
         <Link href='/'>
           <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
             <span className='text-slate-500'>Sahand</span>
@@ -78,78 +81,9 @@ export default function Header() {
             </li>
           </Link>
           {/* <Link href='/profile'> */}
-            {currentUser ? (
+            {session?.user ? (
               <>
-                {/* <li  className='relative flex items-center space-x-2 -mt-1 -mr-4'
-                 onClick={toggleDropdown}
-                >
-                  Use the Image component directly
-                  <img
-                    width='45' height='45'
-                    className='rounded-full h-7 w-7 object-cover cursor-pointer'
-                    src={currentUser?.avatar}
-                    alt='profile'
-                  />
-                  <span
-                    className='text-slate-700 cursor-pointer'
-                   
-                  >
-                    {currentUser?.name}
-                  </span>
-                </li> */}
-
-                {/* {dropdownOpen && (
-                  <div className='absolute top-0 right-14 mt-12 bg-slate-300 border border-gray-200 rounded-md shadow-lg w-30'>
-                    <ul>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => router.push('/profile')}
-                      >
-                        My Profile
-                      </li>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => router.push('/my-bookings')}
-                      >
-                        My Bookings
-                      </li>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => router.push('/my-listings')}
-                      >
-                        My Listings
-                      </li>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => router.push('/favourites')}
-                      >
-                        Favorites
-                      </li>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => router.push('/payments')}
-                      >
-                        Payments
-                      </li>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => signOut()}
-                      >
-                        Logout
-                      </li>
-                      <li
-                        className='py-2 px-8 cursor-pointer hover:bg-gray-100'
-                        onClick={() => router.push('/createListing')}
-                      >
-                        Create-Listing
-                      </li>
-                    </ul>
-                  </div>
-                )} */}
-
-
-
-
+              
 
 
   <Menu as="div" className="relative inline-block">
@@ -179,14 +113,14 @@ export default function Header() {
 
                   </Menu.Button>
 
-      <Menu.Items className="absolute -right-20 w-40 origin-top-right bg-white  shadow-lg ">
+      <Menu.Items className="absolute -right-20 w-40 origin-top-right bg-white  shadow-lg z-50 ">
       <Menu.Item>
         {({ active }) => (
           <li
             className={`py-2 px-8 cursor-pointer ${
               active ? 'bg-gray-100' : 'hover:bg-gray-100'
             }`}
-            onClick={() => router.push(`/profile/${currentUser?._id}`)}
+            onClick={() => router.push(`/profile/${session?.user?._id}`)}
           >
             My Profile
           </li>
@@ -278,7 +212,16 @@ export default function Header() {
 
               </>
             ) : (
-              <li className='text-slate-700 hover:underline'>Sign in</li>
+              <ul className='flex gap-4'>
+              <Link href='/login'>
+                 <li className='text-slate-700 hover:underline'>Log In</li>
+              </Link>
+              <Link href='/register'>
+                 <li className='text-slate-700 hover:underline'>Register</li>
+              </Link>
+             </ul>
+
+
             )}
           {/* </Link> */}
         </ul>

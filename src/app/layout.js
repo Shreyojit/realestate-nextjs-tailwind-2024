@@ -32,19 +32,20 @@ export default function RootLayout({ children,session }) {
     
     <html lang="en">
     <body className={inter.className}>
-           
-           {/* <Header> */}
-
+    <Header />
+          <div className="relative flex flex-col min-h-screen">
+     
 
            {children}
 
-           {/* </Header> */}
-    
+          
+    </div>
          
             
-            
-    </body>
-  </html>
+         
+</body> 
+  </html> 
+
   
        
         </Providing>

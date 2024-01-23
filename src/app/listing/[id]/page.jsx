@@ -34,7 +34,9 @@ import {
 // import Contact from '../components/Contact';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import Reserve from '@/components/Reserve';
+
+import Rev from '@/components/Rev';
+
 
 // https://sabe.io/blog/javascript-format-numbers-commas#:~:text=The%20best%20way%20to%20format,format%20the%20number%20with%20commas.
 
@@ -105,18 +107,19 @@ const ListingDetails = (ctx) => {
   
 
   return (
-    <main>
+    <main className='relative'>
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
       {error && (
         <p className='text-center my-7 text-2xl'>Something went wrong!</p>
       )}
       {listing && !loading && !error && (
         <div>
+        
           <Swiper navigation>
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
-                  className='h-[550px]'
+                  className='h-[550px] relative'
                   style={{
                     background: `url(${url}) center no-repeat`,
                     backgroundSize: 'cover',
@@ -209,7 +212,7 @@ const ListingDetails = (ctx) => {
             )}
             {/* {contact && <Contact listing={listing} />} */}
 
-            {openModal && <Reserve setOpen={setOpenModal} hotelInfo={listing} userId={userId}/>}
+            {openModal && <Rev setOpen={setOpenModal} hotelInfo={listing} userId={userId}/>}
 
           </div>
         </div>

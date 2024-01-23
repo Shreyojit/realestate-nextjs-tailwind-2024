@@ -19,14 +19,19 @@ export default function page() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (data) {
-      dispatch(signInSuccess(data.user)); // Assuming user details are in data.user
-    }
-  }, [data, dispatch]);
-
 
   const {currentUser}  = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!currentUser && data) {
+      // Assuming user details are in data.user
+      dispatch(signInSuccess(data.user));
+    }
+  }, [currentUser, data, dispatch]);
+
+
+
+ 
 
   const [estates, setEstates] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -87,7 +92,7 @@ export default function page() {
 
     <div>
 
-    <Header/>
+   
 
 
 
