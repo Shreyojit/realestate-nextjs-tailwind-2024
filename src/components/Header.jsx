@@ -1,5 +1,5 @@
 import { FaSearch } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
@@ -8,9 +8,15 @@ import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 
 import { Menu } from '@headlessui/react';
+import { signOutUserSuccess } from '@/app/redux/userSlice';
 
 export default function Header() {
+
+  
+
   const { currentUser } = useSelector((state) => state.user);
+  
+
 
   console.log(currentUser)
 
@@ -25,6 +31,34 @@ export default function Header() {
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  const dispatch = useDispatch();
+  
+
+  const handleSignOut = async () => {
+    try {
+      // Dispatch the signOutUserSuccess action before signing out
+      dispatch(signOutUserSuccess());
+
+      // Sign out using NextAuth
+      await signOut({
+        redirect: false,
+        onSuccess: () => {
+          // Handle redirection manually
+          router.push('/'); // Redirect to the homepage or any other desired page
+        },
+      });
+
+      // Handle any additional logic after sign out if needed
+    } catch (error) {
+      // Handle error if needed
+      console.error('Error during sign out:', error);
+    }
+  };
+
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -180,7 +214,7 @@ export default function Header() {
             className={`py-2 px-8 cursor-pointer ${
               active ? 'bg-gray-100' : 'hover:bg-gray-100'
             }`}
-            onClick={() => signOut()}
+            onClick={handleSignOut}
           >
             Logout
           </li>

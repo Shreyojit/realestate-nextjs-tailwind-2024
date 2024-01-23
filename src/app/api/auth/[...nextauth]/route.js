@@ -16,6 +16,8 @@ import db from "@/lib/db";
 
 
 
+
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -28,7 +30,7 @@ const handler = NextAuth({
 
         const user = await User.findOne({ email });
 
-        
+       
 
         const { avatar } = user; // Use "avatar" instead of "image"
 
@@ -46,6 +48,8 @@ const handler = NextAuth({
         const { password : userPassword, ...currentUser } = user._doc;
 
         const accessToken = signJwtToken(currentUser, { expiresIn: '6d' });
+
+       
 
         
         return {
@@ -65,6 +69,7 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        
         token.accessToken = user.accessToken;
         token._id = user._id;
         token.avatar = user.avatar; // Include avatar in the token

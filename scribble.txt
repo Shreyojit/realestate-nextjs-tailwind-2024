@@ -1,0 +1,34 @@
+{
+  checkIn: 2024-02-21T00:00:00.000Z,
+  checkOut: 2024-02-23T00:00:00.000Z,
+  name: 'Sankar Macullum',
+  phone: '6758493420',
+  numberOfGuests: 12,
+  rooms: [
+    {
+      roomNumber: 5,
+      unavailableDates: [Array],
+      _id: new ObjectId('65aec14830ad1b827013f599')
+    },
+    {
+      roomNumber: 9,
+      unavailableDates: [Array],
+      _id: new ObjectId('65aec14830ad1b827013f59a')
+    },
+    {
+      roomNumber: 1,
+      unavailableDates: [Array],
+      _id: new ObjectId('65aec14830ad1b827013f59b')
+    },
+    {
+      roomNumber: 13,
+      unavailableDates: [Array],
+      _id: new ObjectId('65aec14830ad1b827013f59c')
+    }
+  ],
+  price: 18040,
+  place: '65aeb087f3bf811841fce72d',
+  user: '65a445d3f6faa03f48b9b4ed',
+  _id: new ObjectId('65aec14830ad1b827013f598'),
+  __v: 0
+}

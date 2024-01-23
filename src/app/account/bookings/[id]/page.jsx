@@ -4,6 +4,8 @@
 
 
 import React, { useEffect, useState } from 'react'
+import { loadStripe } from "@stripe/stripe-js";
+import axios from 'axios';
 
 const Booking = (ctx) => {
 const id =ctx.params.id
@@ -11,10 +13,11 @@ const id =ctx.params.id
 
 
 const [booking, setBooking] = useState(null);
+const [loading,setLoading] = useState(false)
 
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = loadStripe(publishableKey);
 
-const handleCheckout = async () => {
-}
 
 
 useEffect(() => {
@@ -41,11 +44,75 @@ useEffect(() => {
 console.log(booking)
 
 
-
 const taxRate = 0.125; // 12.5%
 const taxPrice = booking ? booking.price * taxRate : 0;
 
 const totalPrice = booking ? taxPrice + booking.price : 0;
+
+
+
+const handleCheckout = async () => {
+  try {
+    setLoading(true);
+
+    const stripe = await stripePromise;
+
+    if (!booking || !booking.listingName) {
+      console.error('Booking data is missing or incomplete.');
+      return;
+    }
+
+    const item = {
+      name: booking?.listingName,
+      description: "Latest Booking",
+      image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
+      quantity: 1,
+      price: totalPrice,
+    };
+    
+    console.log(item);
+
+    // Assuming `item` is already defined in your component
+    const response = await fetch('/api/checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ item }), // Wrap item in an object
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const checkoutSession = await response.json();
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.id,
+    });
+
+    if (result.error) {
+      alert(result.error.message);
+    }
+  } catch (error) {
+    console.error('Error during checkout:', error);
+  } finally {
+    setLoading(false);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -124,8 +191,9 @@ const totalPrice = booking ? taxPrice + booking.price : 0;
  
      className=' bg-yellow-400 hover:bg-yellow-600 text-white block w-full py-2 rounded mt-2 '
      onClick={handleCheckout}
+     disabled={loading}
    >
-     Pay
+     {loading ? 'Processing...' : 'Pay'}
    </button>
                
 
